@@ -1,0 +1,17 @@
+node_modules/
+dist/
+dist-ssr/
+.env
+.env.local
+.env.*.local
+*.log
+backend/uploads/profiles/*
+!backend/uploads/profiles/.gitkeep
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+.DS_Store
+Thumbs.db

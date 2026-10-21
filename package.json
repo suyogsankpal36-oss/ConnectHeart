@@ -1,0 +1,15 @@
+{
+  "name": "connecthearts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ConnectHearts - Online Dating & Matchmaking Platform",
+  "scripts": {
+    "test": "npm --prefix backend test && npm --prefix frontend test",
+    "test:backend": "npm --prefix backend test",
+    "test:frontend": "npm --prefix frontend test",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev"
+  }
+}

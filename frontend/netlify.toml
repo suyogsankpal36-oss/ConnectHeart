@@ -1,0 +1,24 @@
+# ==============================================================================
+# CONNECTHEARTS FRONTEND — NETLIFY CONFIGURATION (frontend/netlify.toml)
+# Used when Netlify project base directory is set directly to 'frontend'
+# ==============================================================================
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# SPA Fallback for client-side routing (React Router DOM)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Production Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(self), microphone=(self), geolocation=()"

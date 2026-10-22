@@ -14,7 +14,16 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["match", "message", "superlike", "system"],
+      enum: [
+        "match",
+        "new_match",
+        "message",
+        "new_message",
+        "superlike",
+        "system",
+        "profile_update",
+        "safety_alert",
+      ],
       required: true,
     },
     title: {
@@ -29,9 +38,19 @@ const notificationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Match",
     },
+    referenceId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
     read: {
       type: Boolean,
       default: false,
+    },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
+    readAt: {
+      type: Date,
     },
   },
   { timestamps: true }
@@ -39,5 +58,6 @@ const notificationSchema = new mongoose.Schema(
 
 notificationSchema.index({ recipient: 1, createdAt: -1 });
 notificationSchema.index({ recipient: 1, read: 1 });
+notificationSchema.index({ recipient: 1, isRead: 1 });
 
 module.exports = mongoose.model("Notification", notificationSchema);

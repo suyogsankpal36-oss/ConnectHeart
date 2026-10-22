@@ -24,7 +24,9 @@ const blockRoutes = require("./routes/blockRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const seedRoutes = require("./routes/seedRoutes");
-const { getUserProfileById } = require("./controllers/profileController");
+const { getProfile, updateProfile, getUserProfileById } = require("./controllers/profileController");
+const { blockUser } = require("./controllers/blockController");
+const { swipeLike, swipePass } = require("./controllers/discoverController");
 const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
@@ -139,6 +141,22 @@ app.use("/api/notifications", notificationRoutes);
 if (process.env.NODE_ENV !== "production") {
   app.use("/api/seed", seedRoutes);
 }
+
+// SRS Specification Endpoint Catalogue Aliases
+app.get("/api/users/me", authMiddleware, getProfile);
+app.patch("/api/users/me", authMiddleware, updateProfile);
+app.post("/api/users/:userId/block", authMiddleware, blockUser);
+
+app.put("/api/swipes/:targetId", authMiddleware, (req, res, next) => {
+  req.body.targetUserId = req.params.targetId;
+  if (req.body.action === "pass") {
+    return swipePass(req, res, next);
+  }
+  return swipeLike(req, res, next);
+});
+
+// Admin Moderation Queue (FR-11)
+app.use("/api/admin/reports", reportRoutes);
 
 // Public user profile alias requested in spec
 app.get("/api/users/:userId", authMiddleware, (req, res, next) => {

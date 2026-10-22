@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -27,10 +26,24 @@ const userSchema = new mongoose.Schema(
       min: 18,
       max: 120,
     },
+    dateOfBirth: {
+      type: Date,
+    },
     gender: {
       type: String,
       enum: ["male", "female", "non-binary", "other"],
       required: true,
+    },
+    interestedIn: [
+      {
+        type: String,
+        enum: ["male", "female", "non-binary", "other", "all"],
+      },
+    ],
+    role: {
+      type: String,
+      enum: ["member", "moderator", "admin"],
+      default: "member",
     },
     bio: {
       type: String,
@@ -42,6 +55,17 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxlength: 100,
       default: "",
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        default: undefined,
+      },
     },
     interests: {
       type: [String],
@@ -130,5 +154,6 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.index({ isActive: 1, gender: 1, age: 1, createdAt: -1 });
+userSchema.index({ location: "2dsphere" }, { sparse: true });
 
 module.exports = mongoose.model("User", userSchema);

@@ -19,8 +19,10 @@ const reportSchema = new mongoose.Schema(
       required: true,
       enum: [
         "inappropriate_photos",
+        "inappropriate_content",
         "harassment",
         "fake_profile",
+        "spam",
         "spam_or_scam",
         "underage",
         "other",
@@ -28,16 +30,23 @@ const reportSchema = new mongoose.Schema(
     },
     details: {
       type: String,
-      maxlength: 500,
+      maxlength: 2000,
+      default: "",
+    },
+    description: {
+      type: String,
+      maxlength: 2000,
       default: "",
     },
     status: {
       type: String,
-      enum: ["pending", "reviewed", "resolved", "dismissed"],
-      default: "pending",
+      enum: ["open", "pending", "under_review", "reviewed", "resolved", "dismissed"],
+      default: "open",
     },
   },
   { timestamps: true }
 );
+
+reportSchema.index({ status: 1, createdAt: -1 });
 
 module.exports = mongoose.model("Report", reportSchema);

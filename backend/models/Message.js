@@ -18,15 +18,25 @@ const messageSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    clientMessageId: {
+      type: String,
+      default: null,
+      index: true,
+    },
     text: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 2000,
+      maxlength: 5000,
     },
     read: {
       type: Boolean,
       default: false,
+    },
+    status: {
+      type: String,
+      enum: ["sent", "delivered", "read"],
+      default: "sent",
     },
     reactions: [
       {
@@ -47,5 +57,6 @@ const messageSchema = new mongoose.Schema(
 
 messageSchema.index({ match: 1, createdAt: 1 });
 messageSchema.index({ match: 1, receiver: 1, read: 1 });
+messageSchema.index({ sender: 1, clientMessageId: 1 }, { sparse: true });
 
 module.exports = mongoose.model("Message", messageSchema);

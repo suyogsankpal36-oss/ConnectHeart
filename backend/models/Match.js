@@ -9,10 +9,30 @@ const matchSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    participantA: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    participantB: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    status: {
+      type: String,
+      enum: ["active", "unmatched"],
+      default: "active",
+    },
+    matchedAt: {
+      type: Date,
+      default: Date.now,
+    },
     lastMessage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
       default: null,
+    },
+    lastMessageAt: {
+      type: Date,
     },
   },
   { timestamps: true }
@@ -20,5 +40,6 @@ const matchSchema = new mongoose.Schema(
 
 matchSchema.index({ users: 1 });
 matchSchema.index({ users: 1, updatedAt: -1 });
+matchSchema.index({ participantA: 1, participantB: 1 }, { sparse: true });
 
 module.exports = mongoose.model("Match", matchSchema);

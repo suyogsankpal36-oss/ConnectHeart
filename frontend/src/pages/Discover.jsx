@@ -258,17 +258,6 @@ export default function Discover() {
     }
   }
 
-  async function handleSeedMore() {
-    try {
-      const res = await api.post("/seed");
-      toast.success(res.data.message || "Demo profiles loaded!");
-      fetchProfiles();
-      refreshUser();
-    } catch {
-      toast.error("Failed to load demo profiles.");
-    }
-  }
-
   function handleFilterChange(e) {
     const { name, value, type, checked } = e.target;
     setFilters((prev) => ({
@@ -707,7 +696,7 @@ export default function Discover() {
               <h2>You&apos;re All Caught Up!</h2>
               <p className="muted">
                 There are no more new profiles matching your current filters.
-                Try resetting your passed profiles or loading sample profiles to
+                Try adjusting your filters or resetting your passed profiles to
                 keep discovering!
               </p>
 
@@ -718,14 +707,6 @@ export default function Discover() {
                   onClick={handleResetPasses}
                 >
                   🔄 Reset Deck & Explore Again
-                </button>
-
-                <button
-                  type="button"
-                  className="secondary-btn"
-                  onClick={handleSeedMore}
-                >
-                  🪄 Load More Profiles
                 </button>
 
                 {(filters.gender !== "all" || filters.lookingFor !== "all" || Boolean(filters.city?.trim()) || filters.verifiedOnly) && (

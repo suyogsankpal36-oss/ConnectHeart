@@ -3,33 +3,17 @@ import { useAuth } from "../context/useAuth";
 import { getPhotoUrl } from "../utils/photoUrl";
 import NotificationsModal from "./NotificationsModal";
 import toast from "react-hot-toast";
-import api from "../services/api";
 import { useState } from "react";
 
 export default function Navbar() {
-  const { user, logout, stats, refreshUser } = useAuth();
+  const { user, logout, stats } = useAuth();
   const navigate = useNavigate();
-  const [seeding, setSeeding] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
   function handleLogout() {
     logout();
     toast.success("Logged out successfully");
     navigate("/");
-  }
-
-  async function handleSeed() {
-    setSeeding(true);
-    try {
-      const res = await api.post("/seed");
-      toast.success(res.data.message || "Demo profiles loaded!");
-      refreshUser();
-      window.dispatchEvent(new CustomEvent("refreshDiscoveryFeed"));
-    } catch {
-      toast.error("Failed to load demo profiles.");
-    } finally {
-      setSeeding(false);
-    }
   }
 
   const avatarSrc = user?.profilePhoto ? getPhotoUrl(user.profilePhoto) : "";
@@ -106,16 +90,6 @@ export default function Navbar() {
                       {stats.unreadNotificationsCount}
                     </span>
                   )}
-                </button>
-
-                <button
-                  type="button"
-                  className="seed-btn"
-                  onClick={handleSeed}
-                  disabled={seeding}
-                  title="Add sample profiles to discover"
-                >
-                  {seeding ? "Loading..." : "🪄 Demo Profiles"}
                 </button>
 
                 <Link to="/profile" className="user-profile-badge" aria-label="Your Profile">

@@ -522,7 +522,8 @@ exports.googleLogin = async (req, res) => {
   } catch (error) {
     console.error("Google auth controller error:", error.message);
     return res.status(500).json({
-      message: "Google authentication failed on server."
+      message: error.message || "Google authentication failed on server.",
+      error: error.message
     });
   }
 };

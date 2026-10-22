@@ -84,7 +84,10 @@ export default function Login() {
       toast.success(`Welcome, ${data.user.name || "back"}! ❤️`);
       navigate("/discover");
     } catch (error) {
-      if (error.code !== "auth/popup-closed-by-user") {
+      if (
+        error.code !== "auth/popup-closed-by-user" &&
+        error.code !== "auth/cancelled-popup-request"
+      ) {
         toast.error(
           error.response?.data?.message ||
           error.message ||

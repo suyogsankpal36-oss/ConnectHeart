@@ -97,7 +97,10 @@ export default function Register() {
       toast.success(`Welcome to ConnectHearts, ${data.user.name || "Explorer"}! ✨`);
       navigate("/profile");
     } catch (error) {
-      if (error.code !== "auth/popup-closed-by-user") {
+      if (
+        error.code !== "auth/popup-closed-by-user" &&
+        error.code !== "auth/cancelled-popup-request"
+      ) {
         toast.error(
           error.response?.data?.message ||
           error.message ||

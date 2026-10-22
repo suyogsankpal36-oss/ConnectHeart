@@ -39,6 +39,7 @@ const rawOrigins = [
   process.env.CLIENT_URL,
   process.env.FRONTEND_URL,
   ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : []),
+  "https://phenomenal-meerkat-334385.netlify.app",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
 ]
@@ -71,7 +72,7 @@ app.use(
       if (isAllowed) {
         return callback(null, true);
       }
-      return callback(new Error(`CORS policy violation: origin ${origin} is not allowed.`));
+      return callback(null, false);
     },
     credentials: true,
   })

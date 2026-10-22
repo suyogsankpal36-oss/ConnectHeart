@@ -29,7 +29,7 @@ const io = new Server(server, {
           (normalizedOrigin.includes("localhost") ||
             normalizedOrigin.includes("127.0.0.1")));
       if (isAllowed) return callback(null, true);
-      return callback(new Error(`Socket CORS: origin ${origin} not allowed.`));
+      return callback(null, false);
     },
     methods: ["GET", "POST"],
     credentials: true,
